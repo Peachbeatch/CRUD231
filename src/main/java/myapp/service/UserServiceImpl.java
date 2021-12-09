@@ -2,12 +2,13 @@ package myapp.service;
 
 import myapp.dao.UserDao;
 import myapp.model.User;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
-@Service
+@Component
 public class UserServiceImpl implements UserService {
 
     private final UserDao userDao;
@@ -16,25 +17,22 @@ public class UserServiceImpl implements UserService {
         this.userDao = userDao;
     }
 
-    @Transactional
     @Override
-    public void saveUser(User user) {
-        userDao.saveUser(user);
-    }
+    public void saveUser(User user) { userDao.saveUser(user); }
 
-    @Transactional
     @Override
-    public void updateUser(User user) {
-        userDao.updateUser(user);
-    }
+    public void updateUser(Long id, User user) { userDao.updateUser(id, user);}
+
+    @Transactional(readOnly = true)
+    @Override
+    public User getUserById(Long id) { return userDao.getUserById(id); }
 
     @Override
     @Transactional(readOnly = true)
-    public User getUserById(Long id) {
-        return userDao.getUserById(id);
+    public User getUserByUsername(String username) {
+        return userDao.getUserByUsername(username);
     }
 
-    @Transactional
     @Override
     public void deleteUserById(Long id) {
         userDao.deleteUserById(id);
@@ -45,4 +43,5 @@ public class UserServiceImpl implements UserService {
     public List<User> getAllUsers() {
         return userDao.getAllUsers();
     }
+
 }
